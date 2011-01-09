@@ -5,3 +5,5 @@ This allows you to script Refine by creating projects from data files, applying 
 Work in progress! More docs soon
 
 This will eventually be a gem
+
+If you want to port this to another language, check out the [Refine API](https://github.com/maxogden/refine-python/wiki/Refine-API) documentation.
