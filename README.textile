@@ -1,6 +1,6 @@
 <h1>google-refine</h1> is a Ruby Gem client library for "Google Refine":http://code.google.com/p/google-refine/
 
-If you want to port this to another language, check out the [Refine API](https://github.com/maxogden/refine-python/wiki/Refine-API) documentation.
+If you want to port this to another language, check out the "Refine API":https://github.com/maxogden/refine-python/wiki/Refine-API documentation.
 
 h2. Install
 
