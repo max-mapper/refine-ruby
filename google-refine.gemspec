@@ -21,7 +21,8 @@ Gem::Specification.new do |s|
     "README.textile",
     "Rakefile",
     "VERSION",
-    "lib/refine.rb",
+    "google-refine.gemspec",
+    "lib/google-refine.rb",
     "test/dates.txt",
     "test/operations.json",
     "test/test.rb"
