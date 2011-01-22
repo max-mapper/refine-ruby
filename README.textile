@@ -1,8 +1,8 @@
-<h1>googlerefine</h1> is a Ruby Gem client library for "Google Refine":http://code.google.com/p/google-refine/
+<h1>google-refine</h1> is a Ruby Gem client library for "Google Refine":http://code.google.com/p/google-refine/
 
 h2. Install
 
-@gem install googlerefine@
+@gem install google-refine@
 
 h2. Example
 
