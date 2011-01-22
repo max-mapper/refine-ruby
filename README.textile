@@ -1,5 +1,7 @@
 <h1>google-refine</h1> is a Ruby Gem client library for "Google Refine":http://code.google.com/p/google-refine/
 
+If you want to port this to another language, check out the [Refine API](https://github.com/maxogden/refine-python/wiki/Refine-API) documentation.
+
 h2. Install
 
 @gem install google-refine@
@@ -76,5 +78,5 @@ Which outputs:
 
 h2. Copyright
 
-Copyright (c) 2010 Max Ogden. See LICENSE for details.
+Copyright (c) 2011 David Huynh and Max Ogden. See LICENSE for details.
 
