@@ -1,0 +1,80 @@
+<h1>googlerefine</h1> is a Ruby Gem client library for "Google Refine":http://code.google.com/p/google-refine/
+
+h2. Install
+
+@gem install googlerefine@
+
+h2. Example
+
+Given that you have the following raw data:
+
+<pre>
+  <code>
+    Date
+    7 December 2001
+    July 1 2002
+    10/20/10
+  </code>
+</pre>
+
+Google Refine lets you clean up the data and export your operation history as a JSON instruction set. Here is an example that extracts the year from the above dates:
+
+<pre>
+<code>
+  [
+    {
+      "op": "core/text-transform",
+      "description": "Text transform on cells in column Date using expression grel:value.toDate()",
+      "engineConfig": {
+        "facets": [],
+        "mode": "row-based"
+      },
+      "columnName": "Date",
+      "expression": "grel:value.toDate()",
+      "onError": "set-to-blank",
+      "repeat": false,
+      "repeatCount": 10
+    },
+    {
+      "op": "core/text-transform",
+      "description": "Text transform on cells in column Date using expression grel:value.datePart(\"year\")+1",
+      "engineConfig": {
+        "facets": [],
+        "mode": "row-based"
+      },
+      "columnName": "Date",
+      "expression": "grel:value.datePart(\"year\")",
+      "onError": "set-to-blank",
+      "repeat": false,
+      "repeatCount": 10
+    }
+  ]
+</code>
+</pre>
+
+You can use this gem to apply the operation set to the raw data from ruby. You will need to have Google Refine running on your local computer, or specify an external address (see source):
+
+<pre>
+  <code>
+    prj = Refine.new('date cleanup', 'dates.txt')
+    prj.apply_operations('operations.json')
+    puts prj.export_rows('csv')
+    prj.delete_project
+  </code>
+</pre>
+
+Which outputs:
+
+<pre>
+  <code>
+    Date
+    2001
+    2002
+    2010
+  </code>
+</pre>
+
+h2. Copyright
+
+Copyright (c) 2010 Max Ogden. See LICENSE for details.
+

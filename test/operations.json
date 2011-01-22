@@ -14,13 +14,13 @@
   },
   {
     "op": "core/text-transform",
-    "description": "Text transform on cells in column Date using expression grel:value.datePart(\"year\")+1",
+    "description": "Text transform on cells in column Date using expression grel:value.datePart(\"year\")",
     "engineConfig": {
       "facets": [],
       "mode": "row-based"
     },
     "columnName": "Date",
-    "expression": "grel:value.datePart(\"year\")+1",
+    "expression": "grel:value.datePart(\"year\")",
     "onError": "set-to-blank",
     "repeat": false,
     "repeatCount": 10
