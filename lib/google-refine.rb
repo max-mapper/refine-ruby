@@ -17,7 +17,7 @@ class Refine
     File.open(file_name) do |file|
       body = { 
         'project-file' => file,
-        'project-name' => "awesome"
+        'project-name' => project_name
       }
       response = client.post(uri, body)
       url = response.header['Location']
