@@ -47,14 +47,20 @@ class Refine
     JSON.parse(@response.content)['code'] rescue false
   end
 
-  def export_rows(format='tsv')
+  def export_rows(opts={})
+    format = opts["format"] || 'tsv'
     uri = @server + "/command/core/export-rows/#{@project_name}.#{format}"
     client = HTTPClient.new(@server)
+
     body = {
-      'engine' => '{"facets":[],"mode":"row-based"}',
+      'engine' => {
+        "facets" => opts["facets"] || [],
+        "mode" => "row-based"
+      }.to_json,
       'project' => @project_id,
       'format' => format
     }
+
     @response = client.post(uri, body)
     @response.content
   end
