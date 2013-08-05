@@ -29,16 +29,21 @@ class Refine
     project_id
   end
 
-  def apply_operations(file_name)
+  def apply_operations(file_name_or_string)
     raise "You must create a project" unless @project_id
+
+    if File.exists?(file_name_or_string)
+      operations = File.read(file_name_or_string)
+    else
+      operations = file_name_or_string
+    end
+
+    body = { 'operations' => file_name_or_string }
     uri = @server + "/command/core/apply-operations?project=#{@project_id}"
     client = HTTPClient.new(@server)
-    File.open(file_name) do |file|
-      body = { 
-        'operations' => file.read
-      }
-      @response = client.post(uri, body)
-    end
+
+    @response = client.post(uri, body)
+
     JSON.parse(@response.content)['code'] rescue false
   end
 
