@@ -80,4 +80,36 @@ class Refine
     @response = client.post(uri, body)
     JSON.parse(@response.content)['code'] rescue false
   end
+
+  # this pattern is pulled from mailchimp/mailchimp-gem
+
+  def call(method, params = {})
+    uri = "#{@server}/command/core/#{method}"
+    params = { "project" => @project_id }.merge(params)
+    client = HTTPClient.new(@server)
+
+    response = if method.start_with?('get-')
+      client.get(uri, params)
+    else
+      client.post(uri, params)
+    end
+
+    begin
+      response = JSON.parse(response.body)
+    rescue
+      response = JSON.parse('[' + response.body + ']').first
+    end
+
+    # if @throws_exceptions && response.is_a?(Hash) && response["error"]
+    #   raise Mailchimp::APIError.new(response['error'],response['code'])
+    # end
+
+    response
+  end
+
+  def method_missing(method, *args)
+    # translate: get_column_info --> get-column-info
+    call(method.to_s.gsub('_', '-'), *args)
+  end
+
 end
