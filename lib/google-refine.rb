@@ -19,7 +19,6 @@ class Refine
   def create_project(project_name, file_name)
     uri = @server + "/command/core/create-project-from-upload"
     project_id = false
-    client = HTTPClient.new(@server)
     File.open(file_name) do |file|
       body = { 
         'project-file' => file,
@@ -46,23 +45,23 @@ class Refine
 
     body = { 'operations' => file_name_or_string }
     uri = @server + "/command/core/apply-operations?project=#{@project_id}"
-    client = HTTPClient.new(@server)
+
+    # TODO should raise exception on parse error
 
     @response = client.post(uri, body)
-
     JSON.parse(@response.content)['code'] rescue false
   end
 
   def export_rows(opts={})
     format = opts["format"] || 'tsv'
     uri = @server + "/command/core/export-rows/#{@project_name}.#{format}"
-    client = HTTPClient.new(@server)
 
     body = {
       'engine' => {
         "facets" => opts["facets"] || [],
         "mode" => "row-based"
       }.to_json,
+      'options' => opts["options"] || '',
       'project' => @project_id,
       'format' => format
     }
@@ -73,7 +72,6 @@ class Refine
 
   def delete_project
     uri = @server + "/command/core/delete-project"
-    client = HTTPClient.new(@server)
     body = {
       'project' => @project_id
     }
@@ -86,7 +84,6 @@ class Refine
   def call(method, params = {})
     uri = "#{@server}/command/core/#{method}"
     params = { "project" => @project_id }.merge(params)
-    client = HTTPClient.new(@server)
 
     response = if method.start_with?('get-')
       client.get(uri, params)
@@ -112,4 +109,8 @@ class Refine
     call(method.to_s.gsub('_', '-'), *args)
   end
 
+  protected
+    def client
+      @client ||= HTTPClient.new(@server)
+    end
 end
