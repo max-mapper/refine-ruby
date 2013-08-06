@@ -3,17 +3,28 @@ require 'cgi'
 require 'json'
 
 class Refine
+  attr_reader :project_name
+
   def self.get_all_project_metadata(server="http://127.0.0.1:3333")
     uri = "#{server}/command/core/get-all-project-metadata"
     response = HTTPClient.new(server).get(uri)
     JSON.parse(response.body)
   end
 
-  def initialize(project_name, file_name, server="http://127.0.0.1:3333")
-    project_name = CGI.escape(project_name)
-    @server = server
-    @project_id = create_project(project_name, file_name)
-    @project_name = project_name if @project_id
+  def initialize(opts = {})
+    @server = opts["server"] || "http://127.0.0.1:3333"
+    @throws_exceptions = opts["throws_exceptions"] || true
+
+    if opts["file_name"] && !opts["file_name"].empty? && opts["project_name"] && !opts["project_name"].empty?
+      project_name = CGI.escape(opts["project_name"])
+      @project_id = create_project(project_name, opts["file_name"])
+      @project_name = project_name if @project_id
+    else
+      @project_id = opts["project_id"]
+
+      metadata = self.get_project_metadata
+      @project_name = CGI.escape(metadata["name"])
+    end
   end
   
   def create_project(project_name, file_name)
@@ -35,21 +46,13 @@ class Refine
   end
 
   def apply_operations(file_name_or_string)
-    raise "You must create a project" unless @project_id
-
     if File.exists?(file_name_or_string)
       operations = File.read(file_name_or_string)
     else
       operations = file_name_or_string
     end
 
-    body = { 'operations' => file_name_or_string }
-    uri = @server + "/command/core/apply-operations?project=#{@project_id}"
-
-    # TODO should raise exception on parse error
-
-    @response = client.post(uri, body)
-    JSON.parse(@response.content)['code'] rescue false
+    call('apply-operations', 'operations' => file_name_or_string)
   end
 
   def export_rows(opts={})
@@ -97,9 +100,9 @@ class Refine
       response = JSON.parse('[' + response.body + ']').first
     end
 
-    # if @throws_exceptions && response.is_a?(Hash) && response["error"]
-    #   raise Mailchimp::APIError.new(response['error'],response['code'])
-    # end
+    if @throws_exceptions && response.is_a?(Hash) && response["code"] && response["code"] == "error"
+      raise "API Error: #{response}"
+    end
 
     response
   end
