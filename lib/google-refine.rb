@@ -4,6 +4,7 @@ require 'json'
 
 class Refine
   attr_reader :project_name
+  attr_reader :project_id
 
   def self.get_all_project_metadata(server="http://127.0.0.1:3333")
     uri = "#{server}/command/core/get-all-project-metadata"
