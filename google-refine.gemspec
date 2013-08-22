@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{google-refine}
-  s.version = "0.1.0"
+  s.version = "0.1.1"
   s.authors = ["Max Ogden", "Michael Bianco"]
   s.summary = %q{Client library for interacting with Google Refine instances}
   s.description = %q{Client library for interacting with Google Refine instances. Easily work with CSVs from the command line}
