@@ -1,28 +1,28 @@
 [
-  {
-    "op": "core/text-transform",
-    "description": "Text transform on cells in column Date using expression grel:value.toDate()",
-    "engineConfig": {
-      "facets": [],
-      "mode": "row-based"
+    {
+        "op": "core/text-transform",
+        "description": "Text transform on cells in column Date using expression grel:value.toDate()",
+        "engineConfig": {
+            "facets": [],
+            "mode": "row-based"
+        },
+        "columnName": "Date",
+        "expression": "grel:value.toDate()",
+        "onError": "set-to-blank",
+        "repeat": false,
+        "repeatCount": 10
     },
-    "columnName": "Date",
-    "expression": "grel:value.toDate()",
-    "onError": "set-to-blank",
-    "repeat": false,
-    "repeatCount": 10
-  },
-  {
-    "op": "core/text-transform",
-    "description": "Text transform on cells in column Date using expression grel:value.datePart(\"year\")",
-    "engineConfig": {
-      "facets": [],
-      "mode": "row-based"
-    },
-    "columnName": "Date",
-    "expression": "grel:value.datePart(\"year\")",
-    "onError": "set-to-blank",
-    "repeat": false,
-    "repeatCount": 10
-  }
+    {
+        "op": "core/text-transform",
+        "description": "Text transform on cells in column Date using expression grel:value.datePart(\"year\")",
+        "engineConfig": {
+            "facets": [],
+            "mode": "row-based"
+        },
+        "columnName": "Date",
+        "expression": "grel:value.datePart(\"year\")",
+        "onError": "set-to-blank",
+        "repeat": false,
+        "repeatCount": 10
+    }
 ]
